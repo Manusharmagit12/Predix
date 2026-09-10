@@ -1,0 +1,12 @@
+const fs = require('fs');
+const appJs = fs.readFileSync('public/app.js', 'utf8');
+const search = 'class="mk-layout"';
+const pos = appJs.indexOf(search);
+console.log('Position of mk-layout:', pos);
+const back = appJs.lastIndexOf('`', pos);
+const forward = appJs.indexOf('`;', pos);
+const template = appJs.slice(back + 1, forward);
+console.log('Template length:', template.length);
+const opens = (template.match(/<div[\s>]/gi) || []).length;
+const closes = (template.match(/<\/div>/gi) || []).length;
+console.log('<div> count:', opens, '</div> count:', closes);

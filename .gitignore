@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+
+# environment / secrets
+.env
+.env.*
+!.env.example
+
+# runtime data (local JSON store, PostgreSQL is external)
+data/
+
+# logs
+*.log
+logs/
+npm-debug.log*
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.idea/
+.vscode/
