@@ -4,8 +4,8 @@
   "description": "Predix - a full-stack play-money prediction market (Kalshi-style): auth + promo bonus, order-book matching engine, live SSE market data, portfolio, leaderboard, admin resolution.",
   "main": "server.js",
   "scripts": {
-    "start": "node --env-file=.env server.js",
-    "db:init": "node --env-file=.env scripts/migrate.js --init",
+    "start": "node server.js",
+    "db:init": "node scripts/migrate.js --init",
     "db:migrate": "node --env-file=.env scripts/migrate.js",
     "db:import": "node --env-file=.env scripts/import-json.js",
     "test": "node --env-file=.env tests/engine.test.js && node --env-file=.env tests/multi.test.js && node --env-file=.env tests/safety.test.js && node --env-file=.env tests/resolution.test.js && node --env-file=.env tests/stress.test.js && node --env-file=.env tests/pg.test.js && node --env-file=.env tests/ledger.test.js && node --env-file=.env tests/concurrency.test.js && node --env-file=.env tests/withdrawal.test.js && node --env-file=.env tests/feed.test.js && node --env-file=.env tests/weather.test.js && node --env-file=.env tests/run-ui.js qa.test.js && node --env-file=.env tests/run-ui.js md.test.js"
