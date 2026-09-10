@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 'use strict';
 require('./lib/load-env');
+const dns = require('dns');
+if (dns && typeof dns.setDefaultResultOrder === 'function') {
+  dns.setDefaultResultOrder('ipv4first');
+}
 /**
  * Predix — a play-money prediction market (Kalshi-style).
  * Node.js full-stack app (single runtime dependency: pg for PostgreSQL; frontend has no build step):
@@ -73,19 +77,34 @@ function serveStatic(req, res, url) {
 /* ---------- boot ---------- */
 
 async function boot() {
-let db;
-if (process.env.PREDIX_DB === 'pg' || process.env.DATABASE_URL) {
-  const { PgStore } = require('./lib/store-pg');
-  const { migrate } = require('./lib/migrate');
-  db = new PgStore();
-  await migrate(db.pool);   // auto-apply pending schema migrations
-  await db.load();
-  await db.acquireWriterLock(); // exactly one Predix process per database
-  console.log('[server] persistence: PostgreSQL (single-writer lock held)');
-} else {
-  db = new Store(DATA_DIR);
-  console.log('[server] persistence: JSON journal (set PREDIX_DB=pg or DATABASE_URL for PostgreSQL)');
-}
+  let db;
+  if (process.env.PREDIX_DB === 'pg' || process.env.DATABASE_URL) {
+    const { PgStore } = require('./lib/store-pg');
+    const { migrate } = require('./lib/migrate');
+    let pgStore = null;
+    try {
+      pgStore = new PgStore();
+      await migrate(pgStore.pool);   // auto-apply pending schema migrations
+      await pgStore.load();
+      await pgStore.acquireWriterLock(); // exactly one Predix process per database
+      db = pgStore;
+      console.log('[server] persistence: PostgreSQL (single-writer lock held)');
+    } catch (pgErr) {
+      console.error('‼️ [server] PostgreSQL connection failed:', pgErr.message);
+      if (pgStore && pgStore.pool) {
+        try { await pgStore.pool.end(); } catch {}
+      }
+      if (pgErr.code === 'ENETUNREACH' || (pgErr.message && pgErr.message.includes('ENETUNREACH'))) {
+        console.error('💡 [server] ENETUNREACH: your database host resolved to an IPv6 address, but this container environment is IPv4-only.');
+        console.error('💡 [server] If using Supabase, switch your DATABASE_URL to the Supabase Connection Pooler URI (aws-0-xxxx.pooler.supabase.com:6543 or 5432) which supports IPv4.');
+      }
+      console.warn('⚠️ [server] Falling back to file/JSON store so the application boots and stays online.');
+      db = new Store(DATA_DIR);
+    }
+  } else {
+    db = new Store(DATA_DIR);
+    console.log('[server] persistence: JSON journal (set PREDIX_DB=pg or DATABASE_URL for PostgreSQL)');
+  }
 const hub = new Hub();
 const engine = new Engine(db, hub);
 const liveSync = new LiveSync(db, engine, hub);
