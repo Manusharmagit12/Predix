@@ -1243,30 +1243,6 @@ async function viewMarket(slug) {
       </div>`;
   }
 
-  let liveSyncCard = '';
-  if (d.isLiveSync) {
-    const probDisplay = d.liveProb !== undefined && d.liveProb !== null ? `${Math.round(d.liveProb * 100)}%` : '—';
-    liveSyncCard = `
-      <div class="live-market-banner section">
-        <div style="display:flex;align-items:center;gap:12px">
-          <span class="live-pulse-dot" style="width:10px;height:10px"></span>
-          <div>
-            <div style="font-weight:700;font-size:13.5px;color:var(--ink);display:flex;align-items:center;gap:8px">
-              Real-World Prediction Market Feed
-              <span class="badge" style="background:rgba(16,185,129,0.15);color:var(--green);font-size:10.5px">LIVE SYNC</span>
-            </div>
-            <div class="muted small" style="margin-top:2px">
-              Mirrored from <b>${esc(d.liveSource || 'Manifold')}</b> · External consensus probability: <b style="color:var(--green)">${probDisplay}</b> · Real-world volume: <b>$${fmtQty(d.liveVolume || 0)}</b>
-            </div>
-          </div>
-        </div>
-        ${d.liveExternalUrl ? `
-          <a href="${esc(d.liveExternalUrl)}" target="_blank" rel="noopener noreferrer" class="live-market-source-btn">
-            ${ic('externalLink', 13)} View Original Market ↗
-          </a>
-        ` : ''}
-      </div>`;
-  }
 
   app().innerHTML = `
   <div class="mk-layout">
@@ -1300,7 +1276,6 @@ async function viewMarket(slug) {
         </div>
       </div>
 
-      ${liveSyncCard}
       ${feedCard}
       ${strikeLadderHTML(d)}
       <div class="card chart-card section">
