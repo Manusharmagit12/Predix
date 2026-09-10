@@ -314,7 +314,7 @@ function openDepositModal(prefillCents, onDone) {
           <span>Funding needed for open trade: <b>${fmtMoney(prefillCents)}</b></span>
         </div>` : ''}
 
-        <div class="pay-method-grid" style="grid-template-columns:repeat(4, 1fr);margin-bottom:14px">
+        <div class="pay-method-grid modal-pay-grid" style="margin-bottom:14px">
           <button type="button" class="pay-method-btn ${curMethod === 'card' ? 'active' : ''}" data-pm="card">
             ${ic('creditCard', 18)}
             <span class="pm-title">Card</span>
@@ -360,7 +360,7 @@ function openDepositModal(prefillCents, onDone) {
             <div style="margin-bottom:8px">
               <input id="dep-card-num" class="input" placeholder="4242 •••• •••• 4242" value="4242 4242 4242 4242" style="font-family:monospace" />
             </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+            <div class="card-inline-fields">
               <input id="dep-card-exp" class="input" placeholder="MM/YY" value="12/28" />
               <input id="dep-card-cvc" class="input" placeholder="CVC" value="888" maxlength="4" />
               <input id="dep-card-zip" class="input" placeholder="ZIP" value="10001" />
@@ -372,7 +372,7 @@ function openDepositModal(prefillCents, onDone) {
         ` : curMethod === 'bank' ? `
           <div style="background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:14px">
             <div style="font-size:12px;font-weight:700;margin-bottom:8px">Select Bank Institution</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px">
+            <div class="bank-chips-grid">
               ${['Chase Bank', 'Bank of America', 'Wells Fargo', 'Citibank'].map((b, i) => `
                 <button type="button" class="chip ${i === 0 ? 'active' : ''}" data-bank="${b}" style="justify-content:center;padding:7px">${b}</button>
               `).join('')}
@@ -1795,18 +1795,18 @@ function profitCalcHTML(d) {
       </div>
       <div class="calc-body">
         <div class="calc-row">
-          <div class="calc-col">
+          <div class="calc-col calc-col-entry">
             <label>Entry price (prob)</label>
             <div class="calc-val" id="calc-in-price">${fmtPrice(curPrice)} <small class="muted">(${curPrice}%)</small></div>
           </div>
-          <div class="calc-col" style="flex:2">
+          <div class="calc-col calc-col-slider">
             <div style="display:flex;justify-content:space-between;align-items:center">
               <label>Target exit probability</label>
               <b id="calc-slider-val" class="calc-slider-badge">${fmtPrice(exitInit)} (${exitInit}%)</b>
             </div>
             <input type="range" id="calc-slider" min="1" max="99" value="${exitInit}" class="calc-range" />
           </div>
-          <div class="calc-col" style="max-width:120px">
+          <div class="calc-col calc-col-qty">
             <label>Contracts</label>
             <input type="number" id="calc-qty" class="input" style="padding:7px 10px;font-size:13px" min="1" max="5000" value="50" />
           </div>
@@ -2838,7 +2838,7 @@ async function viewWallet(routeQuery) {
     if (activeMethod === 'card') {
       const dollars = selectedDepositCents / 100;
       return `
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start">
+        <div class="pay-form-cols">
           <div>
             <label style="display:block;font-size:12.5px;font-weight:700;color:var(--ink-2);margin-bottom:8px">Select Deposit Amount (USD)</label>
             <div class="amount-presets" style="margin-bottom:12px">
@@ -2862,7 +2862,7 @@ async function viewWallet(routeQuery) {
               <label>Card Number</label>
               <input id="card-number" class="input" value="•••• •••• •••• 4242" placeholder="4000 1234 5678 9010" />
             </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="card-split-fields">
               <div class="auth-field">
                 <label>Expiry (MM/YY)</label>
                 <input id="card-exp" class="input" value="12/28" placeholder="MM/YY" />
@@ -2966,7 +2966,7 @@ async function viewWallet(routeQuery) {
       const depositAddress = '0x71C8A51f28F421D87EaE6297316A74d89Eb9372B';
       const qrSvg = generateQrSvg(depositAddress, 180);
       return `
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start">
+        <div class="pay-form-cols">
           <div>
             <div class="auth-field">
               <label>Select Stablecoin &amp; Network</label>
@@ -2997,9 +2997,9 @@ async function viewWallet(routeQuery) {
               <div style="font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:6px">Interactive Simulation:</div>
               <p class="muted small" style="margin-bottom:12px">Simulate an on-chain transfer detection to fund your balance immediately.</p>
               
-              <div style="display:flex;gap:10px;align-items:center">
+              <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
                 <input id="crypto-sim-amt" class="input" type="number" min="10" max="10000" step="10" value="100" style="width:130px" placeholder="Amount" />
-                <button class="btn-primary" id="crypto-sim-btn" style="flex:1;margin:0;display:inline-flex;align-items:center;justify-content:center;gap:6px">
+                <button class="btn-primary" id="crypto-sim-btn" style="flex:1;margin:0;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:180px">
                   ${ic('zap', 14)} Simulate On-Chain Transfer
                 </button>
               </div>
@@ -3878,7 +3878,7 @@ async function viewProfile() {
         <h3>${ic('medal', 17)} Predix Rewards</h3>
         <div style="display:flex;gap:26px;flex-wrap:wrap;align-items:center">
           <div class="tier-badge"><span class="gem">${ic('medal', 15)}</span>${rw.tier} tier</div>
-          <div style="min-width:260px;flex:1">
+          <div style="min-width:0;flex:1 1 220px">
             <div class="progress"><div style="width:${pct}%"></div></div>
             <div class="reward-sub">${fmtQty(rw.points)} points ${rw.nextAt ? `· ${fmtQty(Math.max(0, rw.nextAt - rw.points))} more to reach ${rw.next}` : '· top tier'}</div>
           </div>
@@ -4064,7 +4064,7 @@ async function viewAnalytics() {
       </div>
     </div>
 
-    <div class="two-col section" style="grid-template-columns: 1.15fr 0.85fr; gap: 20px;">
+    <div class="two-col section analytics-two-col">
       <div class="card card-pad">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
           <h3 style="margin:0">${ic('chart', 18)} Market Scanner</h3>
