@@ -707,9 +707,20 @@ function renderChrome() {
     else if (cat && pill.toLowerCase() === cat[1].toLowerCase()) active = true;
     a.classList.toggle('active', active);
   });
-  // mobile: close drawer on navigation
-  $('#sidebar').classList.remove('open');
-  $('#sidebar-backdrop').classList.remove('show');
+  // sync mobile bottom nav items
+  $$('.mobile-bottom-nav .mobile-nav-item[data-mnav]').forEach((a) => {
+    const nav = a.dataset.mnav;
+    let active = false;
+    if (nav === 'home' && (h === '#/' || h === '' || h === '#/markets' || h.startsWith('#/c/'))) active = true;
+    else if (nav === 'trending' && h === '#/trending') active = true;
+    else if (nav === 'portfolio' && h === '#/portfolio') active = true;
+    else if (nav === 'wallet' && (h === '#/wallet' || h === '#/payments')) active = true;
+    a.classList.toggle('active', active);
+  });
+  // mobile: close drawer and mobile search on navigation
+  const sb = $('#sidebar'); if (sb) sb.classList.remove('open');
+  const sbd = $('#sidebar-backdrop'); if (sbd) sbd.classList.remove('show');
+  const sw = $('.searchwrap'); if (sw) sw.classList.remove('mobile-open');
 }
 
 /* ---------- router ---------- */
@@ -4862,19 +4873,46 @@ function toggleTheme() {
 })();
 
 /* ---------- global chrome wiring ---------- */
-$('#theme-btn').onclick = toggleTheme;
-$('#hamburger').onclick = () => {
-  $('#sidebar').classList.toggle('open');
-  $('#sidebar-backdrop').classList.toggle('show');
+if ($('#theme-btn')) $('#theme-btn').onclick = toggleTheme;
+if ($('#drawer-theme-btn')) $('#drawer-theme-btn').onclick = toggleTheme;
+
+const toggleSidebar = () => {
+  $('#sidebar')?.classList.toggle('open');
+  $('#sidebar-backdrop')?.classList.toggle('show');
 };
-$('#sidebar-backdrop').onclick = () => {
-  $('#sidebar').classList.remove('open');
-  $('#sidebar-backdrop').classList.remove('show');
+if ($('#hamburger')) $('#hamburger').onclick = toggleSidebar;
+if ($('#mobile-menu-btn')) $('#mobile-menu-btn').onclick = toggleSidebar;
+
+const sbd = $('#sidebar-backdrop');
+if (sbd) sbd.onclick = () => {
+  $('#sidebar')?.classList.remove('open');
+  $('#sidebar-backdrop')?.classList.remove('show');
 };
+
+const mobSearchToggle = $('#mobile-search-toggle');
+if (mobSearchToggle) {
+  mobSearchToggle.onclick = () => {
+    const sw = $('.searchwrap');
+    if (sw) {
+      sw.classList.toggle('mobile-open');
+      if (sw.classList.contains('mobile-open')) {
+        const inp = $('#search');
+        if (inp) { inp.focus(); }
+      }
+    }
+  };
+}
 document.addEventListener('click', (e) => {
   const panel = $('#notif-panel');
   if (panel && panel.classList.contains('open') && !panel.contains(e.target) && e.target.id !== 'bell-btn' && !$('#bell-btn')?.contains(e.target)) {
     closeNotifPanel();
+  }
+  const sw = $('.searchwrap');
+  const mobToggle = $('#mobile-search-toggle');
+  if (sw && sw.classList.contains('mobile-open')) {
+    if (!sw.contains(e.target) && e.target.id !== 'mobile-search-toggle' && !mobToggle?.contains(e.target)) {
+      sw.classList.remove('mobile-open');
+    }
   }
 });
 

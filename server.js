@@ -137,11 +137,12 @@ setInterval(() => {
 
 /* ---------- production startup checks ---------- */
 if (process.env.NODE_ENV === 'production') {
-  const warnings = [];
   if (!process.env.ADMIN_PASSWORD) {
-    process.env.ADMIN_PASSWORD = 'admin' + Math.random().toString(36).slice(-6);
-    warnings.push(`ADMIN_PASSWORD unset — temporary admin password generated: ${process.env.ADMIN_PASSWORD}`);
+    console.error('\n  ‼️  REFUSING TO START IN PRODUCTION: ADMIN_PASSWORD environment variable is unset.');
+    console.error('      Set ADMIN_PASSWORD=<secret> or ADMIN_PASSWORD will leave the admin console wide open.\n');
+    process.exit(1);
   }
+  const warnings = [];
   if (db instanceof Store) warnings.push('JSON journal persistence — set PREDIX_DB=pg for PostgreSQL durability');
   if (warnings.length) console.log('  ⚠️  PRODUCTION CHECK: ' + warnings.join(' · '));
   else console.log('  ✓ production checks passed');

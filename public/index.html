@@ -2,16 +2,16 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Predix — Trade the Future | Prediction Markets</title>
   <meta name="description" content="Predix — a play-money prediction market. Trade YES/NO contracts on real-world events: politics, crypto, sports, economics and more." />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='p_fav' x1='4' y1='2' x2='28' y2='30' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0%25' stop-color='%230066FF'/%3E%3Cstop offset='50%25' stop-color='%2300C8FF'/%3E%3Cstop offset='100%25' stop-color='%2300E599'/%3E%3C/linearGradient%3E%3ClinearGradient id='p_fav_f' x1='16' y1='2' x2='28' y2='14' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0%25' stop-color='%23FFFFFF' stop-opacity='0.85'/%3E%3Cstop offset='100%25' stop-color='%23FFFFFF' stop-opacity='0.1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%230b0e14'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M6 4C6 2.9 6.9 2 8 2H18C22.4 2 26 5.6 26 10C26 14.4 22.4 18 18 18H12V26C12 26.9 11.1 27.6 10.2 27.6H8C6.9 27.6 6 26.9 6 26V4ZM12 6.5V13.5H17.5C19.4 13.5 21 11.9 21 10C21 8.1 19.4 6.5 17.5 6.5H12Z' fill='url(%23p_fav)'/%3E%3Cpath d='M18 2L26 10L22 10L15 3L18 2Z' fill='url(%23p_fav_f)'/%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='p_fav' x1='4' y1='2' x2='28' y2='30' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0%25' stop-color='%230066FF'/%3E%3Cstop offset='50%25' stop-color='%2300C8FF'/%3E%3Cstop offset='100%25' stop-color='%2300E599'/%3E%3C/linearGradient%3E%3ClinearGradient id='p_fav_f' x1='16' y1='2' x2='28' y2='14' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0%25' stop-color='%23FFFFFF' stop-opacity='0.85'/%3E%3Cstop offset='100%25' stop-color='%23FFFFFF' stop-opacity='0.1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%230b0e14'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M6 4C6 2.9 6.9 2 8 2H18C22.4 2 26 5.6 26 10C26 14.4 22.4 18 18 18H12V26C12 26.9 11.1 27.6 10.2 27.6H8C6.9 27.6 6 26.9 6 26V4ZM12 6.5V13.5H17.5C19.4 13.5 21 11.9 21 10C21 8.1 19.4 6.5 17.5 6.5H12Z' fill='url(%23p_fav)'/%3E%3Cpath d='M18 2L26 10L22 10L15 3L18 2Z' fill='url(%23p_fav_f)'/%3E%3C/svg%3E' />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <!-- non-render-blocking font load: never let an external stylesheet blank the page -->
   <!-- Google Fonts: Inter & Plus Jakarta Sans for crisp Polymarket typography -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="/styles.css?v=predix_v4" />
+  <link rel="stylesheet" href="/styles.css?v=predix_v5" />
 </head>
 <body>
   <div class="shell">
@@ -68,6 +68,10 @@
       </div>
 
       <div class="sidebar-foot">
+        <button class="drawer-theme-btn" id="drawer-theme-btn" type="button">
+          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
+          <span>Switch Theme (Dark / Light)</span>
+        </button>
         <div class="play-pill"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 8h10a5 5 0 0 1 5 5.5c-.3 2.3-1.6 3.5-3 3.5-1.7 0-2.2-1.5-4-1.5h-6c-1.8 0-2.3 1.5-4 1.5-1.4 0-2.7-1.2-3-3.5A5 5 0 0 1 7 8Z"/><path d="M8.5 11v3M7 12.5h3"/><circle cx="15.5" cy="11.5" r=".9" fill="currentColor" stroke="none"/><circle cx="17.5" cy="13.5" r=".9" fill="currentColor" stroke="none"/></svg> Play money — no real funds</div>
         <div class="foot-links">
           <a href="#/">Markets</a> · <a href="#/leaderboard">Leaderboard</a> · <a href="#/learn">How it works</a> · <span>© 2026 Predix</span>
@@ -103,6 +107,9 @@
           <input id="search" type="search" placeholder="Search by market, category, or event…" autocomplete="off" />
           <kbd class="search-kbd">/</kbd>
         </div>
+        <button class="iconbtn mobile-search-toggle" id="mobile-search-toggle" title="Search markets" aria-label="Search">
+          <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M9 3.5a5.5 5.5 0 1 0 3.4 9.8l3.4 3.4 1.4-1.4-3.4-3.4A5.5 5.5 0 0 0 9 3.5Zm0 2a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7Z" fill="currentColor"/></svg>
+        </button>
         <div class="top-nav-links">
           <a href="#/leaderboard" class="top-link">Leaderboard</a>
           <a href="#/analytics" class="top-link">Analytics</a>
@@ -155,9 +162,33 @@
     </div>
   </div>
 
+  <!-- Polymarket-style Native Mobile Bottom Navigation Bar -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile Navigation">
+    <a href="#/" class="mobile-nav-item active" data-mnav="home">
+      <svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg>
+      <span>Markets</span>
+    </a>
+    <a href="#/trending" class="mobile-nav-item" data-mnav="trending">
+      <svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s1 2.5-1 5c-1.2 1.5-2 2.6-2 4.5a3 3 0 0 0 6 0c0-.8-.3-1.5-.7-2.2 1.9.6 3.2 2.3 3.2 4.4A5.5 5.5 0 0 1 12 20a5.5 5.5 0 0 1-5.5-5.5C6.5 9.6 12 8.5 12 3Z"/></svg>
+      <span>Trending</span>
+    </a>
+    <a href="#/portfolio" class="mobile-nav-item" data-mnav="portfolio">
+      <svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M9 8V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/></svg>
+      <span>Portfolio</span>
+    </a>
+    <a href="#/wallet" class="mobile-nav-item" data-mnav="wallet">
+      <svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+      <span>Wallet</span>
+    </a>
+    <button class="mobile-nav-item" id="mobile-menu-btn" type="button" aria-label="Open menu">
+      <svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      <span>Menu</span>
+    </button>
+  </nav>
+
   <div class="notif-panel" id="notif-panel"></div>
   <div id="toasts" class="toasts" aria-live="polite"></div>
 
-  <script src="/app.js?v=predix_v4"></script>
+  <script src="/app.js?v=predix_v5"></script>
 </body>
 </html>
