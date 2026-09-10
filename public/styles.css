@@ -1,6 +1,6 @@
 /* ============================================================================
-   PREDIX — Polymarket-Inspired Prediction Market Design System
-   Obsidian dark theme (#0b0e14) · Polymarket Blue (#0066FF) · Dual YES/NO Action Buttons
+   PREDIX — Modern Financial Prediction Market Design System
+   Obsidian dark theme (#0b0e14) · Predix Blue (#0066FF) · Dual YES/NO Action Buttons
    Inter typography · Equal-height market cards · Sticky category pill navigation.
    ============================================================================ */
 
@@ -313,7 +313,7 @@ img { max-width: 100%; }
   padding: 0 4px; line-height: 1; pointer-events: none; box-shadow: 0 0 0 2px var(--panel);
 }
 
-/* ----------------------------- Polymarket Category Pill Navigation ----------------------------- */
+/* ----------------------------- Category Pill Navigation ----------------------------- */
 .cat-pill-nav {
   position: sticky; top: 64px; z-index: 38; background: var(--topbar-bg);
   backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
@@ -325,18 +325,90 @@ img { max-width: 100%; }
 }
 .cat-pill-inner::-webkit-scrollbar { display: none; }
 .cat-pill {
-  display: inline-flex; align-items: center; gap: 6px; padding: 6px 13px;
+  display: inline-flex; align-items: center; gap: 6.5px; padding: 6px 14px;
   border-radius: 999px; font-size: 13px; font-weight: 600; color: var(--muted);
   background: transparent; border: 1px solid transparent; white-space: nowrap;
-  transition: all .14s ease; text-decoration: none;
+  text-decoration: none; cursor: pointer; user-select: none;
+  transition: color 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.cat-pill:hover { color: var(--ink); background: var(--bg-2); text-decoration: none; }
+.cat-pill .ic {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.18s ease;
+}
+
+/* Inactive Hover state: clear dark ink text with soft background & micro-lift */
+.cat-pill:hover {
+  color: var(--ink) !important;
+  background: var(--bg-2);
+  border-color: var(--line);
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+.cat-pill:hover .ic {
+  transform: scale(1.1);
+  stroke: var(--ink) !important;
+}
+.cat-pill:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* Active State in LIGHT MODE:
+   Vibrant primary brand blue with crisp pure white text — guaranteed 100% visible */
 .cat-pill.active {
-  color: #ffffff; background: var(--panel-2); border-color: var(--line-2);
-  font-weight: 700; box-shadow: 0 1px 4px rgba(0, 0, 0, .2);
+  color: #ffffff !important;
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(0, 102, 255, 0.32);
+}
+.cat-pill.active .ic {
+  stroke: #ffffff !important;
+}
+
+/* Active Hover State in LIGHT MODE */
+.cat-pill.active:hover {
+  color: #ffffff !important;
+  background: #0052cc !important;
+  border-color: #0052cc !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 102, 255, 0.45);
+}
+.cat-pill.active:hover .ic {
+  stroke: #ffffff !important;
+  transform: scale(1.08);
+}
+
+/* Dark Theme Overrides */
+[data-theme="dark"] .cat-pill {
+  color: #94a3b8;
+}
+[data-theme="dark"] .cat-pill:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+[data-theme="dark"] .cat-pill:hover .ic {
+  stroke: #ffffff !important;
 }
 [data-theme="dark"] .cat-pill.active {
-  color: #ffffff; background: #161e2e; border-color: #334155;
+  color: #ffffff !important;
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 2px 12px rgba(0, 102, 255, 0.48);
+}
+[data-theme="dark"] .cat-pill.active:hover {
+  color: #ffffff !important;
+  background: #1a75ff !important;
+  border-color: #1a75ff !important;
+  box-shadow: 0 4px 16px rgba(0, 102, 255, 0.6);
 }
 .pill-badge {
   font-size: 9.5px; font-weight: 800; letter-spacing: .05em; padding: 1px 5px;

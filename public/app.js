@@ -783,7 +783,7 @@ async function viewHome(variant, category) {
     head = `
       <div class="page-head"><div>
         <h2 class="page-title">${category === 'Live' ? '🟢 Live Real-World Synced Markets' : esc(category)}</h2>
-        <p class="page-sub">${category === 'Live' ? 'Real-time prediction questions mirrored directly from global prediction markets' : `${state.markets.length} market${state.markets.length === 1 ? '' : 's'} in this category`}</p>
+        <p class="page-sub">${category === 'Live' ? 'Real-time prediction questions tracked dynamically as global trading occurs' : `${state.markets.length} market${state.markets.length === 1 ? '' : 's'} in this category`}</p>
       </div></div>`;
   } else {
     const t = HOME_TITLES[variant] || HOME_TITLES.home;
@@ -1066,7 +1066,7 @@ function marketCard(m) {
     </div>
     ${body}
     <div class="mcard-vol">
-      <span>Vol <b>${fmtQty(m.vol24 || 0)}</b> shares ${m.isLiveSync && m.liveVolume ? `<small class="muted" title="Real-world Manifold volume">($${fmtQty(m.liveVolume)})</small>` : ''}</span>
+      <span>Vol <b>${fmtQty(m.vol24 || 0)}</b> shares ${m.isLiveSync && m.liveVolume ? `<small class="muted" title="Global consensus volume">($${fmtQty(m.liveVolume)})</small>` : ''}</span>
       <span style="margin-left:auto">${statusBadge(m)}</span>
     </div>
   </div>`;
@@ -1221,7 +1221,8 @@ async function viewMarket(slug) {
     const propBlock = d.status === 'open' ? '' : (
       fp && fp.state === 'ready' ? `<div class="feed-prop ready">${ic('bot', 15)} Feed proposal: <b>${fp.outcome === 'yes' ? 'YES' : 'NO'}</b> — ${ruleWhat} ${fp.operatorText || fd.operatorText} ${propTarget} at ${propVal || '—'} (${timeAgo(fp.priceAt)}) · awaiting admin confirmation</div>`
       : fp && fp.state === 'blocked' ? `<div class="feed-prop blocked">${ic('alert', 15)} Feed proposal blocked — ${esc(fp.reason)}: ${esc(fp.detail || '')}. Auto-resolution is blocked until fresh data is available.</div>`
-      : `<div class="feed-prop waiting">${ic('bot', 15)} Feed proposal will be generated at ${fmtClock(fd.resolutionTime)} from the ${isWx ? 'Open-Meteo' : 'CoinGecko'} ${isWx ? 'weather data' : 'price'}.</div>`);
+      : `<div class="feed-prop waiting">${ic('bot', 15)} Feed proposal will be generated at ${fmtClock(fd.resolutionTime)} from the official ${isWx ? 'meteorological station' : 'market index'} ${isWx ? 'weather reading' : 'price'}.</div>`);
+    const feedSrc = (fq && fq.source) ? (fq.source === 'CoinGecko' ? 'Crypto Spot Index' : (fq.source === 'Open-Meteo' ? 'Meteorological Station' : fq.source)) : (isWx ? 'Meteorological Station' : 'Crypto Spot Index');
     feedCard = `
       <div class="card card-pad section feed-card" id="feed-card">
         <div class="feed-head">
@@ -1231,14 +1232,14 @@ async function viewMarket(slug) {
         <div class="feed-price-row">
           <div class="feed-price">${valText}</div>
           <div class="feed-meta">
-            <div>Source: <b>${esc(fq ? fq.source : (isWx ? 'Open-Meteo' : 'CoinGecko'))}</b></div>
+            <div>Source: <b>${esc(feedSrc)}</b></div>
             ${locLine}
             <div class="muted small">Updated ${fq && fq.fetchedAt ? timeAgo(fq.fetchedAt) : '—'}</div>
           </div>
           <button class="act-btn" id="feed-rf" title="Refresh market data">${ic('refresh', 13)} Refresh</button>
         </div>
         <div class="feed-rule">${ic('target', 15)} <b>YES</b> if ${ruleWhat} ${fd.operatorText} <b>${ruleTarget}</b> at ${fmtClock(fd.resolutionTime)}</div>
-        <div class="muted small">Reference data from ${isWx ? 'Open-Meteo' : 'CoinGecko'} — the probability on this page is set by Predix trading, not by this ${isWx ? 'weather reading' : 'price'}.${fq && fq.error ? ' <span class="down">(' + esc(fq.error) + ')</span>' : ''}</div>
+        <div class="muted small">Official reference data — the probability on this page is set by Predix trading, not by this ${isWx ? 'weather reading' : 'price'}.${fq && fq.error ? ' <span class="down">(' + esc(fq.error) + ')</span>' : ''}</div>
         ${propBlock}
       </div>`;
   }
@@ -1739,7 +1740,7 @@ function strikeLadderHTML(d) {
   return `
     <div class="card card-pad section strike-card" id="strike-card">
       <div class="bookhead">
-        <h3 style="margin:0">${ic('layers', 16)} Kalshi Strike Ladder <span class="muted small">— all outcomes &amp; live prices</span></h3>
+        <h3 style="margin:0">${ic('layers', 16)} Multi-Outcome Strike Ladder <span class="muted small">— all outcomes &amp; live prices</span></h3>
       </div>
       <div class="tablewrap">
         <table class="strike-table">
@@ -1766,7 +1767,7 @@ function profitCalcHTML(d) {
   return `
     <div class="card card-pad section calc-card" id="calc-card">
       <div class="bookhead">
-        <h3 style="margin:0">${ic('trendingUp', 16)} Kalshi Profit &amp; Returns Simulator <span class="muted small">— simulate payoff before close</span></h3>
+        <h3 style="margin:0">${ic('trendingUp', 16)} Profit &amp; Returns Simulator <span class="muted small">— simulate payoff before close</span></h3>
       </div>
       <div class="calc-body">
         <div class="calc-row">
@@ -4187,7 +4188,7 @@ function viewLogin() {
     <h2>Welcome back</h2>
     <p class="sub">Log in to trade on Predix.</p>
     <div class="form-error" id="ferr"></div>
-    <div class="auth-field"><label>Username or email</label><input id="a-id" class="input" autocomplete="username" placeholder="you@example.com" /></div>
+    <div class="auth-field"><label>Username or email</label><input id="a-id" class="input" autocomplete="username" placeholder="you@email.com" /></div>
     <div class="auth-field"><label>Password</label><input id="a-pw" class="input" type="password" autocomplete="current-password" placeholder="••••••••" /></div>
     <button class="btn-primary" id="go">Log in</button>
     <div class="auth-alt">New here? <a href="#/signup">Create an account → get $100 with promo <b>WELCOME100</b></a></div>`);
@@ -4220,7 +4221,7 @@ function viewSignup(ref) {
     <p class="sub">Join Predix and start trading with play money.</p>
     <div class="form-error" id="ferr"></div>
     <div class="auth-field"><label>Username</label><input id="a-user" class="input" autocomplete="username" placeholder="3–24 chars: letters, numbers, _" /></div>
-    <div class="auth-field"><label>Email</label><input id="a-email" class="input" type="email" autocomplete="email" placeholder="you@example.com" /></div>
+    <div class="auth-field"><label>Email</label><input id="a-email" class="input" type="email" autocomplete="email" placeholder="you@email.com" /></div>
     <div class="auth-field"><label>Password</label><input id="a-pw" class="input" type="password" autocomplete="new-password" placeholder="at least 8 characters" /></div>
     <div class="auth-field">
       <label>Promo code</label>
@@ -4385,8 +4386,8 @@ async function viewAdmin() {
           <label>Data feed <span class="muted">(optional — external reference data + resolution proposal)</span></label>
           <select id="nm-fp" class="input" style="max-width:340px">
             <option value="">None — resolve manually</option>
-            <option value="coingecko">CoinGecko · crypto price (BTC / ETH)</option>
-            <option value="open-meteo">Open-Meteo · weather (temperature / precipitation)</option>
+            <option value="coingecko">Crypto Spot Index (BTC / ETH)</option>
+            <option value="open-meteo">Weather Station (temperature / precipitation)</option>
           </select>
           <div id="nm-feed-crypto" style="display:none;margin-top:8px">
             <select id="nm-fa" class="input" style="max-width:280px">
@@ -4434,7 +4435,7 @@ async function viewAdmin() {
               <div class="act-row">
                 ${m.status === 'open' ? `<button class="act-btn danger" data-halt="${m.id}">Halt</button>` : ''}
                 ${m.status === 'halted' ? `<button class="act-btn" data-open="${m.id}">Reopen</button>` : ''}
-                ${m.feed && m.status !== 'resolved' ? `<button class="act-btn" data-feedrf="${m.id}" title="Force-refresh the CoinGecko price + proposal">↻ Feed</button>` : ''}
+                ${m.feed && m.status !== 'resolved' ? `<button class="act-btn" data-feedrf="${m.id}" title="Force-refresh the feed price + proposal">↻ Feed</button>` : ''}
                 ${m.feed && m.status !== 'resolved' ? `<button class="act-btn resolve-yes" data-resfeed="${m.id}">Resolve per feed</button>` : ''}
                 ${m.status !== 'resolved' ? (m.multi
                   ? `<button class="act-btn resolve-yes" data-res="${m.id}" data-multi="1">Resolve (pick winner)</button>`
